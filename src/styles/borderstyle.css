@@ -1,0 +1,166 @@
+.askq{
+    width: 200px;
+    text-align:center;
+    height:48px;
+    position:relative;
+  border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    background:#0f0f1a;
+    font-weight:500
+}
+@property --angle{
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+
+}
+.askq::after,.askq::before{
+    --angle:0deg;
+    content:"";
+    display:block;
+    width: 205px;
+    height: 53px;
+    border-radius:9999px;
+    position:absolute;
+    z-index:-1;
+    top:50%;
+    left:50%;
+    translate:-50% -50%;
+    background-image:conic-gradient(from var(--angle),transparent 80%,#f472b6, #fb7185, #facc15
+
+
+
+);
+    animation: 3s spin linear infinite;
+   
+}
+.askq::before{
+    filter:blur(12px);
+    
+}
+@keyframes spin{
+    from{
+        --angle:0deg;
+    }
+    to{
+        --angle:360deg;
+    }
+}
+.askcard{
+    width:900px;
+    height:540px;
+    position:relative;
+   background:#0f0f1a;
+    border-radius:15px;
+    
+}
+.askcard::after,.askcard::before{
+    
+    content:"";
+    display:block;
+    width: 910px;
+    height: 550px;
+    border-radius:15px;
+    background:whitesmoke;
+    position:absolute;
+    z-index:-1;
+    top:50%;
+    left:50%;
+    translate:-50% -50%;
+    padding:10px;
+background-image:conic-gradient(from var(--angle),transparent 40%,#8b5cf6, #6366f1, #0ea5e9
+
+
+);
+animation: 3s spin linear infinite;
+} 
+.askcard:before{
+    filter:blur(1.5rem)
+}
+
+/* Base button styles */
+.btn {
+    position: relative;
+    padding: 12px 24px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    font-family: inherit;
+}
+
+/* Shine sweep effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s;
+}
+
+.post-comment-btn {
+    position: relative;
+    padding: 12px 24px;
+    background: #22c55e;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    box-shadow: 0 4px 14px 0 rgba(34, 197, 94, 0.3);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.post-comment-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.post-comment-btn:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 rgba(34, 197, 94, 0.4);
+}
+
+.post-comment-btn:hover::before {
+    left: 100%;
+}
+
+.post-comment-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px 0 rgba(34, 197, 94, 0.3);
+}
