@@ -23,18 +23,19 @@ export default function AskQuestionCard() {
   
    const {user} = useAuthStore()
    const userId = user?.$id
-   const {hydrated,session} = useAuthStore()
+   const {hydrated} = useAuthStore()
    const router = useRouter()
 
 
    useEffect(() => {
-    if (hydrated && !session) {
+    if(!user) return
+    if (hydrated && !user) {
       router.push("/auth/login");
     }
-  }, [hydrated, session, router]);
+  }, [hydrated,user, router]);
 
   // ⏳ Wait while Zustand rehydrates or redirect happens
-  if (!hydrated || !session) {
+  if (!hydrated || !user) {
     return null; // or show a loading spinner
   }
   const handleSubmit = async (e: React.FormEvent) => {

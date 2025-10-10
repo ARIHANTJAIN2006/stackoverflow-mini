@@ -15,14 +15,20 @@ type Question = {
 
 export default function FetchQuestions({ questions }: { questions: Question[] }) {
   const router = useRouter()
-  const {session,hydrated} = useAuthStore()
+  const {user,hydrated} = useAuthStore()
   
   const [votesResult, setVotesResult] = useState<Record<string, number>>({});
   useEffect(() => {
-    if (hydrated && !session) {
+    if(!user) return
+    if (hydrated && !user) {
       router.push("/auth/login");
     }
-  }, [hydrated, session, router]);
+  }, [hydrated,user, router]);
+
+  // ⏳ Wait while Zustand rehydrates or redirect happens
+  if (!hydrated || !user) {
+    return null; // or show a loading spinner
+  }
 
   // ⏳ Wait while Zustand rehydrates or redirect happens
   
@@ -46,7 +52,7 @@ export default function FetchQuestions({ questions }: { questions: Question[] })
 
     fetchVotes();
   }, [questions]);
-if (!hydrated || !session) {
+if (!hydrated || !user) {
     return null; // or show a loading spinner
   }
   return (
