@@ -27,6 +27,8 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tabler/icons-react": "^3.34.1",
     "@tanstack/react-table": "^8.21.3",
+    "@uiw/react-markdown-preview": "^5.1.5",
+    "@uiw/react-md-editor": "^4.0.8",
     "appwrite": "^18.1.1",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
