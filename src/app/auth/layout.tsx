@@ -18,7 +18,7 @@ const router = useRouter()
     
           
           setTimeout(() => {
-            router.replace('/');
+            router.replace('/auth/login');
           }, 1000);
     
           // Clean up the interval
