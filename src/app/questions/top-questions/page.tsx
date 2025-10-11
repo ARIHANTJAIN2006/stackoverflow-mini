@@ -2,9 +2,12 @@
 
 import { Particles } from "@/components/magicui/particles"
 import { Separator } from "@/components/ui/separator"
+import { useAuthStore } from "@/store/Auth"
 import axios from "axios"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 type Question = {
   $id: string
@@ -18,6 +21,27 @@ export default function TopQuestionsPage() {
   const [questions, setQuestions] = useState<Question[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const isLoggedIn = useAuthStore(state => !!state.jwt);
+  const {hydrated} = useAuthStore()
+  useEffect(() => {
+    if(!hydrated) return
+    if (!isLoggedIn) {
+      // Start showing toast every 3 seconds
+      const interval = setInterval(() => {
+        toast.error('You are not logged in, Lil bro 😎');
+      }, 1000);
+
+      // Redirect after 5 second
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 1000);
+
+      // Clean up the interval
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn, router]);
+  
 
   useEffect(() => {
     async function fetchTopQuestions() {
@@ -39,7 +63,7 @@ export default function TopQuestionsPage() {
 
     fetchTopQuestions()
   }, [])
-
+if(!isLoggedIn) return null;
   if (loading) return <p className="text-zinc-400 mt-8">Loading top questions...</p>
   if (error) return <p className="text-red-400 mt-8">{error}</p>
 

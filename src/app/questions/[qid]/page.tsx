@@ -8,22 +8,31 @@ import Link from "next/link";
 import "@/styles/borderstyle.css"
 import { useAuthStore } from "@/store/Auth";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 //votedById,voteStatus,type,typeId
 function NavItem({ href, text }: { href: string; text: string }) {
-   const {hydrated,session} = useAuthStore()
+   const {hydrated} = useAuthStore()
      const router = useRouter()
-  
-  
-     useEffect(() => {
-      if (hydrated && !session) {
-        router.push("/auth/login");
-      }
-    }, [hydrated, session, router]);
-  
-    // ⏳ Wait while Zustand rehydrates or redirect happens
-    if (!hydrated || !session) {
-      return null; // or show a loading spinner
+  const isLoggedIn = useAuthStore(state => !!state.jwt);
+
+  useEffect(() => {
+    if(!hydrated) return
+    if (!isLoggedIn) {
+      // Start showing toast every 3 seconds
+      const interval = setInterval(() => {
+        toast.error('You are not logged in, Lil bro 😎');
+      }, 1000);
+
+      // Redirect after 5 second
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 1000);
+
+      // Clean up the interval
+      return () => clearInterval(interval);
     }
+  }, [isLoggedIn, router]);
+  if(!isLoggedIn) return null;
   return (
     <Link
       href={href}

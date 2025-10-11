@@ -117,7 +117,7 @@ export default function Page() {
             href="/ai-help" 
             className="text-white hover:text-amber-200 transition-colors py-2"
           >
-            AI Help
+            AI Assist
           </Link>
         </nav>
       </aside>

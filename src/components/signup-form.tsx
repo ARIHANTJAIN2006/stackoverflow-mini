@@ -16,6 +16,7 @@ import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 
 export function SignupForm({ className }: { className?: string }) {
+ 
   const { createAccount, login } = useAuthStore()
   const router = useRouter()
 
@@ -54,7 +55,7 @@ export function SignupForm({ className }: { className?: string }) {
       toast.error(loginResponse.error.message)
     } else {
       toast.success("Signup successful! Redirecting to login...")
-      router.push("/")
+      router.push("/auth/login")
     }
   }
 

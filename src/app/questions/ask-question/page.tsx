@@ -23,42 +23,61 @@ export default function AskQuestionCard() {
   
    const {user} = useAuthStore()
    const userId = user?.$id
-   const {hydrated} = useAuthStore()
-   const router = useRouter()
 
 
-   useEffect(() => {
-    if(!user) return
-    if (hydrated && !user) {
-      router.push("/auth/login");
+ const router = useRouter();
+  const isLoggedIn = useAuthStore(state => !!state.jwt);
+  const {hydrated} = useAuthStore()
+  useEffect(() => {
+    if(!hydrated) return
+    if (!isLoggedIn) {
+      // Start showing toast every 3 seconds
+      const interval = setInterval(() => {
+        toast.error('You are not logged in, Lil bro 😎');
+      }, 1000);
+
+      // Redirect after 5 second
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 1000);
+
+      // Clean up the interval
+      return () => clearInterval(interval);
     }
-  }, [hydrated,user, router]);
-
-  // ⏳ Wait while Zustand rehydrates or redirect happens
-  if (!hydrated || !user) {
-    return null; // or show a loading spinner
-  }
+  }, [isLoggedIn, router]);
+  if(!isLoggedIn) return null;
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log({ title, body });
-    const res = await axios.post("/api/questions/publishquestion",{
-    title:title,
-    content:body,
-    userId:userId
-    })
+  e.preventDefault();
+  console.log({ title, body });
+
+  try {
+    const res = await axios.post("/api/questions/publishquestion", {
+      title: title,
+      content: body,
+      userId: userId,
+    });
+
     if (res.status === 200) {
-      toast.success("Your question has been published successfully!",{
-        duration:5000,
+      toast.success("Your question has been published successfully!", {
+        duration: 5000,
       });
+
+      // Clear form fields
       setTitle('');
       setBody('');
+
+      // Redirect to /questions after a short delay to let the toast show
+      setTimeout(() => {
+        router.push('/questions');
+      }, 500); // 0.5s delay
     } else {
       toast.error("There was an error publishing your question. Please try again.");
     }
-   
-    setTitle('');
-    setBody('');
-  };
+  } catch (err) {
+    console.error(err);
+    toast.error("There was an error publishing your question. Please try again.");
+  }
+};
 
   return (
    
@@ -98,6 +117,7 @@ export default function AskQuestionCard() {
         </div>
         
 <button
+
           type="submit"
           className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
         >

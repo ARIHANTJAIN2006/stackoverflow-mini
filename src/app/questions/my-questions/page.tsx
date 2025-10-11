@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { useAuthStore } from "@/store/Auth"
 import axios from "axios"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react"
 type Question = {
   $id: string;
@@ -14,6 +15,7 @@ type User = {
   $id: string;
 } | null | undefined;
 import { useState } from "react"
+import toast from "react-hot-toast";
 
 export default function UserQuestionsPage(){
     let user: User | null | undefined;
@@ -21,13 +23,29 @@ export default function UserQuestionsPage(){
    let userId:string | undefined
    
     const [questions, setQuestions] = useState<Question[]>([])
-    const [hydrated, setHydrated] = useState(false)
+    const {hydrated} = useAuthStore()
 
-useEffect(() => {
-  setHydrated(true)
-  user = useAuthStore.getState().user
-  userId  = user?.$id
-}, [])
+const router = useRouter();
+  const isLoggedIn = useAuthStore(state => !!state.jwt);
+
+  useEffect(() => {
+    if(!hydrated) return
+    if (!isLoggedIn) {
+      // Start showing toast every 3 seconds
+      const interval = setInterval(() => {
+        toast.error('You are not logged in, Lil bro 😎');
+      }, 1000);
+
+      // Redirect after 5 second
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 1000);
+
+      // Clean up the interval
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn, router]);
+  
     useEffect(() => {
      
       if (!hydrated || !user?.$id) return
@@ -43,6 +61,7 @@ useEffect(() => {
         }
         fetchuserquestions()
     }, [userId])
+    if(!isLoggedIn) return null;
     return(
       (isAnswer &&
        <div className="mt-35 mr-30">

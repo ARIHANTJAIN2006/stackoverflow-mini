@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useAuthStore } from "@/store/Auth";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 type Question = {
@@ -18,17 +19,25 @@ export default function FetchQuestions({ questions }: { questions: Question[] })
   const {user,hydrated} = useAuthStore()
   
   const [votesResult, setVotesResult] = useState<Record<string, number>>({});
+  const isLoggedIn = useAuthStore(state => !!state.jwt);
   useEffect(() => {
-    if(!user) return
-    if (hydrated && !user) {
-      router.push("/auth/login");
-    }
-  }, [hydrated,user, router]);
+    if(!hydrated) return
+    if (!isLoggedIn) {
+      // Start showing toast every 3 seconds
+      const interval = setInterval(() => {
+        toast.error('You are not logged in, Lil bro 😎');
+      }, 1000);
 
-  // ⏳ Wait while Zustand rehydrates or redirect happens
-  if (!hydrated || !user) {
-    return null; // or show a loading spinner
-  }
+      // Redirect after 5 second
+      setTimeout(() => {
+        router.replace('/auth/login');
+      }, 1000);
+
+      // Clean up the interval
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn, router]);
+  
 
   // ⏳ Wait while Zustand rehydrates or redirect happens
   
@@ -52,6 +61,7 @@ export default function FetchQuestions({ questions }: { questions: Question[] })
 
     fetchVotes();
   }, [questions]);
+  if(!isLoggedIn) return null;
 if (!hydrated || !user) {
     return null; // or show a loading spinner
   }
