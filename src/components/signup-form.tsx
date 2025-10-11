@@ -54,7 +54,7 @@ export function SignupForm({ className }: { className?: string }) {
     if (loginResponse.error) {
       toast.error(loginResponse.error.message)
     } else {
-      toast.success("Signup successful! Redirecting to login...")
+      toast.success("Signup successful! Redirecting to Home Page...")
       router.push("/auth/login")
     }
   }
