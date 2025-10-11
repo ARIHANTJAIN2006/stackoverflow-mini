@@ -41,7 +41,7 @@ export function SignupForm({ className }: { className?: string }) {
       password.toString()
     )
 
-    if (response.error) {
+    if (response.success === false) {
       toast.dismiss(loadingToast)
       toast.error(response.error.message)
       return
@@ -51,10 +51,10 @@ export function SignupForm({ className }: { className?: string }) {
 
     toast.dismiss(loadingToast)
 
-    if (loginResponse.error) {
+    if (loginResponse.success === false) {
       toast.error(loginResponse.error.message)
     } else {
-      toast.success("Signup successful! Redirecting to Home Page...")
+      toast.success("Signup successful! Redirecting to Login...")
       router.push("/auth/login")
     }
   }

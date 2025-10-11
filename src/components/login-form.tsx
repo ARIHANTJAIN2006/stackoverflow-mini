@@ -43,7 +43,7 @@ export default function Loginform({ className }: { className?: string }) {
     setIsLoading(true)
 
     const loginResponse = await login(email.toString(), password.toString())
-    if (loginResponse.error) {
+    if (loginResponse.success === false) {
       setError(loginResponse.error?.message)
       setIsLoading(false)
     } else {
