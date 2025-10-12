@@ -5,8 +5,13 @@ import { TracingBeam } from "@/components/ui/tracingbeam";
 import FetchQuestions from "@/helpers/fetchQuestions"; // update the path if needed
 
 export default async function QuestionsPage() {
-  const response = await database.listDocuments(db, questionCollection,);
-  const questions = response.documents;
+  let questions = [];
+  try{
+  const response = await database.listDocuments(db, questionCollection);
+   questions = response.documents;
+  }catch(error){
+    console.error("Error fetching questions:", error);
+  }
 
   return (
     <TracingBeam className="container">
