@@ -49,7 +49,7 @@ export function FetchComments({ parentId, type, userId }: CommentSectionProps) {
     if (!newComment.trim()) return;
 
     try {
-      const response = await axios.post("/api/comments/addcomment", {
+      const response = await axios.post("/api/comments/createcomment", {
         content: newComment,
         typeId: parentId,
         type,
