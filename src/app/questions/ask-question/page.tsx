@@ -44,7 +44,7 @@ export default function AskQuestionCard() {
       // Clean up the interval
       return () => clearInterval(interval);
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, router,hydrated]);
   if(!isLoggedIn) return null;
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();

@@ -44,7 +44,7 @@ const router = useRouter();
       // Clean up the interval
       return () => clearInterval(interval);
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, router,hydrated]);
   
     useEffect(() => {
      

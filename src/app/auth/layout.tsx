@@ -5,11 +5,13 @@ import {useRouter} from "next/navigation"
 import React, { useEffect } from "react"
 import toast from "react-hot-toast"
 const Layout = ({children}:{children:React.ReactNode}) => {
-const {session} = useAuthStore()
+const {session,hydrated} = useAuthStore()
 const router = useRouter()
  const isLoggedIn = useAuthStore(state => !!state.jwt);
     
       useEffect(() => {
+        if(!hydrated) return
+        console.log(isLoggedIn," ",hydrated)
         if (isLoggedIn) {
           
           const interval = setInterval(() => {
@@ -24,7 +26,7 @@ const router = useRouter()
           // Clean up the interval
           return () => clearInterval(interval);
         }
-      }, [isLoggedIn, router]);
+      }, [isLoggedIn, router,hydrated]);
 if(session)
     return null
 return(
