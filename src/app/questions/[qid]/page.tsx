@@ -39,7 +39,7 @@ export default function QuestionPage() {
   const qid = params.qid as string;
 
   const routing = () => {
-    router.push("/questions/askquestion");
+    router.push("/questions/ask-question");
   };
 
   const {  user } = useAuthStore();
