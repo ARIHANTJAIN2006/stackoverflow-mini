@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Deployed on Vercel
-https://stackoverflow-mini-pmjblatga-arihant-jains-projects-e26d6d5e.vercel.app
+stackoverflow-mini-9kf2.vercel.app
 
 ## Getting Started
 

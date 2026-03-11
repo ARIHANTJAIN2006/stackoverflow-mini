@@ -17,47 +17,41 @@ import { useRouter } from "next/navigation"
 
 export function SignupForm({ className }: { className?: string }) {
  
-  const { createAccount, login } = useAuthStore()
+  const { createAccount } = useAuthStore()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const firstName = formData.get("firstname")
-    const lastName = formData.get("lastname")
-    const email = formData.get("email")
-    const password = formData.get("password")
+  e.preventDefault()
+  const formData = new FormData(e.currentTarget)
+  const firstName = formData.get("firstname")
+  const lastName = formData.get("lastname")
+  const email = formData.get("email")
+  const password = formData.get("password")
 
-    if (!firstName || !lastName || !email || !password) {
-      toast.error("Please fill out all the fields")
-      return
-    }
-
-    const loadingToast = toast.loading("Creating your account...")
-
-    const response = await createAccount(
-      `${firstName} ${lastName}`,
-      email.toString(),
-      password.toString()
-    )
-
-    if (response.success === false) {
-      toast.dismiss(loadingToast)
-      toast.error(response.error.message)
-      return
-    }
-
-    const loginResponse = await login(email.toString(), password.toString())
-
-    toast.dismiss(loadingToast)
-
-    if (loginResponse.success === false) {
-      toast.error(loginResponse.error.message)
-    } else {
-      toast.success("Signup successful! Redirecting to Home Page...")
-      router.push("/")
-    }
+  if (!firstName || !lastName || !email || !password) {
+    toast.error("Please fill out all the fields")
+    return
   }
+
+  const loadingToast = toast.loading("Creating your account...")
+
+  const response = await createAccount(
+    `${firstName} ${lastName}`,
+    email.toString(),
+    password.toString()
+  )
+
+  toast.dismiss(loadingToast)
+
+  if (response.success === false) {
+    toast.error(response.error.message)
+    return
+  }
+
+  toast.success("Signup successful! Please login to continue.")
+  router.push("/auth/login") // redirect to login page
+}
+
 
   return (
     <div className={cn("w-full max-w-md mx-auto bg-black", className)}>

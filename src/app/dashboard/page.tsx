@@ -114,7 +114,7 @@ export default function Page() {
 
           {/* AI Help - simple link without dropdown */}
           <Link 
-            href="/ai-help" 
+            href="/AI-ASSIST" 
             className="text-white hover:text-amber-200 transition-colors py-2"
           >
             AI Assist
